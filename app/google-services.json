@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "773565856709",
+    "project_id": "courutin-with-fire",
+    "storage_bucket": "courutin-with-fire.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:773565856709:android:f74ff6d02917cc8b9d29ac",
+        "android_client_info": {
+          "package_name": "com.example.courutin_test_fire"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "773565856709-qla82hsesr327ftvarv2u6ibdidrf8oa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.courutin_test_fire",
+            "certificate_hash": "971aa71eb5b676a6d5847d3bf0e34e0d4e58553c"
+          }
+        },
+        {
+          "client_id": "773565856709-fu68scn05sbg8ocnk5a5lu6ptv20nlme.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPGc28ovwoDHZ-fka2u4yA4MFtn81PiIs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "773565856709-fu68scn05sbg8ocnk5a5lu6ptv20nlme.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

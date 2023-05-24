@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">Courutin_test_fire</string>
+    <string name="registered_title">Registered screen</string>
+    <string name="enter_firstname">Enter firstname</string>
+    <string name="enter_lastname">Enter name</string>
+    <string name="enter_email">Enter email</string>
+    <string name="enter_password">Enter password</string>
+    <string name="bt_create_acc">Create account</string>
+    <string name="question_availability_acc">Already have an account?</string>
+    <string name="bt_tv_login_activity">Login</string>
+    <string name="login_title">Login screen</string>
+    <string name="bt_tv_registered_activity">Registered</string>
+    <string name="bt_enter_acc">Enter</string>
+    <string name="question_availability_reg">Don\'t have an account?</string>
+    <string name="bt_send_password">Send password reset email</string>
+    <string name="bt_tv_forgot_password">Forgot your password</string>
+    <string name="er_enter_firstname">You must enter firstname</string>
+    <string name="er_enter_lastname">You must enter lastname</string>
+    <string name="er_enter_email">You must enter email</string>
+    <string name="er_enter_password">You must enter password</string>
+    <string name="er_register_api_email_already_use">Authentication failed. The email address is already in use by another account.</string>
+    <string name="er_register_api_password_invalid">Authentication failed. The given password is invalid.</string>
+    <string name="register_successful">Registration successful</string>
+    <string name="er_login_api_user_not_found">There is no user record corresponding to this email. The user may have been deleted.</string>
+    <string name="er_login_api_invalid_credentials">The email and password combination is invalid.</string>
+    <string name="er_login_api_wrong_password">The password is invalid.</string>
+    <string name="forgot_password_successful">A password reset message was sent to the specified email address</string>
+    <string name="er_forgot_password">No user found with this email.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name='start_payment'>Start the payment process</string>
+    <string name='tokenization_canceled'>Tokenization canceled</string>
+    <string name='tokenization_success'>Token: %1$s</string>
+    <string name='test_phone_number'>+79262847233</string>
+    <string name='test_redirect_url'>https://custom.redirect.url/</string>
+    <string name='main_product_name'>Коммунальные услуги</string>
+    <string name='main_product_description'>Что-то написать</string>
+</resources>
