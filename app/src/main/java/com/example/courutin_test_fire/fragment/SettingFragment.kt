@@ -10,10 +10,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
-import com.example.courutin_test_fire.AuthManager
-import com.example.courutin_test_fire.DatabaseManager
-import com.example.courutin_test_fire.LoginActivity
-import com.example.courutin_test_fire.R
+import com.example.courutin_test_fire.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -70,11 +67,11 @@ class SettingFragment : Fragment() {
             val view = inflater.inflate(R.layout.fragment_setting, container, false)
             val bt_exit = view.findViewById<CardView>(R.id.bt_exit)
             val bt_info_acc = view.findViewById<CardView>(R.id.bt_info_acc)
-            val bt_send = view.findViewById<CardView>(R.id.bt_send)
             val tv_id = view.findViewById<TextView>(R.id.tv_id)
             var test_text = ""
             CoroutineScope(Dispatchers.IO).launch {
-                test_text = "FireId: " +
+                val index = BlockchainManager.getInstance().getLastIndex()
+                test_text = index.toString() + "FireId: " +
                         AuthManager.getCurrentUserId() +
                         "\n" +
                         "Contract: " +
@@ -95,44 +92,11 @@ class SettingFragment : Fragment() {
                     .addToBackStack(null)
                     .commit()
             }
-            bt_send.setOnClickListener{
-                //val url = "http://10.0.2.2:5000/send_data"
-                //val str = AuthManager.getCurrentUserId()
-                //val json = "{\"UID\": \"$str\"}"
-                //sendPost(url, json)
-                CoroutineScope(Dispatchers.Main).launch {
-                    val contract = DatabaseManager.getUserContractAddress().toString()
-                    Toast.makeText(requireContext(),contract,Toast.LENGTH_SHORT).show()
-                }
-            }
             return view
         }
     }
 
-    private fun sendPost(url: String, json: String) {
-        val body = json.toRequestBody("application/json; charset=utf-8".toMediaType())
-        val httpClient = OkHttpClient()
 
-        val request = Request.Builder()
-            .url(url)
-            .post(body)
-            .build()
-
-        httpClient.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                e.printStackTrace()
-            }
-
-            @Throws(IOException::class)
-            override fun onResponse(call: Call, response: Response) {
-                if (!response.isSuccessful) {
-                    throw IOException("Unexpected code $response")
-                }
-
-                println(response.body!!.string())
-            }
-        })
-    }
 
     companion object {
         /**

@@ -63,9 +63,10 @@
                 android:layout_gravity="center_horizontal"
                 android:textSize="16sp"/>
             <TextView
+                android:id="@+id/amount_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="666,66 ₽"
+                android:text=""
                 android:layout_gravity="center_horizontal"
                 android:textSize="50sp"
                 android:textColor="#E45C51"/>
@@ -129,7 +130,7 @@
                     android:layout_marginLeft="20dp">
 
                     <ImageView
-                        android:id="@+id/imageView4"
+                        android:id="@+id/bt_send"
                         android:layout_width="150dp"
                         android:layout_height="150dp"
                         android:layout_weight="1"

@@ -33,10 +33,6 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, AuthManager.getCurrentUserId(), Toast.LENGTH_SHORT).show()
             val userId = AuthManager.getCurrentUserId().toString() // get authenticated user id
             DatabaseManager.setUserId(userId)
-            //else
-            //binding.textView.text = "Hello ${currentUser.email}"
-            //binding!!.btExit.setOnClickListener { exitInAccount() }
-
             // Отображаем HomeFragment при запуске приложения
             if (savedInstanceState == null) {
                 replaceFragment(homeFragment)
@@ -68,10 +64,5 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
         finish()
-    }
-
-    private fun exitInAccount() {
-        AuthManager.signOut()
-        noSuchCurrentUser()
     }
 }

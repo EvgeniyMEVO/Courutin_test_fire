@@ -73,6 +73,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:text="@string/bt_create_acc"
+        android:backgroundTint="@color/base"
         app:layout_constraintEnd_toEndOf="@+id/ed_password"
         app:layout_constraintStart_toStartOf="@+id/ed_password"
         app:layout_constraintTop_toBottomOf="@+id/ed_password" />

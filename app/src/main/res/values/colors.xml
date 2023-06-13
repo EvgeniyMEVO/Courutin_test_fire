@@ -2,11 +2,13 @@
 <resources>
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
+    <color name="purple_700">#273A9F</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="base">#FF3F51B5</color>
     <color name="dop">#9FA5C6</color>
+    <color name="unpaid">#E45C51</color>
+    <color name="paid">#44944A</color>
 </resources>
