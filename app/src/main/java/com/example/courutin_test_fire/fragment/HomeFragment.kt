@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.example.courutin_test_fire.*
+import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,13 +20,19 @@ import ru.yoomoney.sdk.kassa.payments.Checkout.createTokenizationResult
 import ru.yoomoney.sdk.kassa.payments.Checkout.createTokenizeIntent
 import ru.yoomoney.sdk.kassa.payments.checkoutParameters.*
 import java.math.BigDecimal
+import java.math.BigInteger
+import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.properties.Delegates
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
-
+private var debtDouble by Delegates.notNull<Double>()
+private var lastIndex by Delegates.notNull<Int>()
+private lateinit var amount_info : TextView
+private var all_info = "Оплата от: "
 /**
  * A simple [Fragment] subclass.
  * Use the [HomeFragment.newInstance] factory method to
@@ -54,33 +61,93 @@ class HomeFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
         val bt_pay = view.findViewById<ImageView>(R.id.bt_pay)
+        val bt_send = view.findViewById<ImageView>(R.id.bt_send)
         val ed_full_address = view.findViewById<TextView>(R.id.full_address)
+
+        amount_info = view.findViewById(R.id.amount_info)
+
+
+        updatePaid()
+
         bt_pay.setOnClickListener {
             initPayment()
+        }
+        bt_send.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, SendInfoJKHBlockchain())
+                .addToBackStack(null)
+                .commit()
         }
         var city: String? = null
         var street: String? = null
         var house: String? = null
         var index: String? = null
-        var full_adress = "Адрес: "
+        var name: String? = null
+        var firstname: String? = null
 
 
         CoroutineScope(Dispatchers.IO).launch {
+            var full_adress = "Адрес: "
             city = DatabaseManager.getAnyInfo("city").getOrThrow()
             street = DatabaseManager.getAnyInfo("street").getOrThrow()
             house = DatabaseManager.getAnyInfo("house").getOrThrow()
             index = DatabaseManager.getAnyInfo("index").getOrThrow()
+            name = DatabaseManager.getAnyInfo("name").getOrThrow()
+            firstname = DatabaseManager.getAnyInfo("firstname").getOrThrow()
             withContext(Dispatchers.Main) {
                 city?.let { full_adress += city }
                 street?.let { full_adress += "," + street }
                 house?.let { full_adress += "," + house}
                 index?.let { full_adress += "," + index }
+
                 ed_full_address?.setText(full_adress)
 
             }
+            firstname?.let { all_info += firstname + " " }
+            name?.let { all_info += "$name\n$full_adress" }
         }
         // Inflate the layout for this fragment
         return view
+    }
+
+    fun updatePaid(){
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val blockchainManager = BlockchainManager.getInstance()
+                var amountColor = 0
+                lastIndex = blockchainManager.getLastIndex().toInt()
+                var text = ""
+                if (lastIndex != -1){
+                    val (period, debt, isPaid) = blockchainManager.getLastBill()
+                    if (isPaid){
+                        debtDouble = 1.0
+                        text = "0.0 ₽"
+                        amountColor = R.color.paid
+                    }
+                    else{
+                        debtDouble = debt.toDouble()
+                        text = "$debtDouble ₽"
+                        amountColor = R.color.unpaid
+                    }
+                }
+                else{
+                    // возможность опалаты не откроется если будет 0.0 в связи с этим 1.0
+                    debtDouble = 1.0
+                    text = "0.0 ₽"
+                    amountColor = R.color.paid
+
+                }
+                withContext(Dispatchers.Main) {
+                    // Здесь вы можете обновить пользовательский интерфейс с информацией о последнем счете
+                    // Например:
+                    amount_info.text = text
+                    amount_info.setTextColor(resources.getColor(amountColor))
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                // Здесь вы можете обработать ошибки
+            }
+        }
     }
 
 
@@ -102,11 +169,21 @@ class HomeFragment : Fragment() {
     private fun showToken(data: Intent?) {
         if (data != null) {
             val token = createTokenizationResult(data).paymentToken
+            val currentDate = Date()
+            val dateFormat = SimpleDateFormat("ddMMyyyy", Locale.getDefault())
+            val dateString = dateFormat.format(currentDate)
+            CoroutineScope(Dispatchers.IO).launch{
+                BlockchainManager.getInstance().updateBill(
+                    BigInteger.valueOf(lastIndex.toLong()),
+                    BigInteger.valueOf(dateString.toLong()))
+                updatePaid()
+            }
             Toast.makeText(
                 requireActivity(),
                 String.format(Locale.getDefault(), getString(R.string.tokenization_success), token),
                 Toast.LENGTH_LONG
             ).show()
+
         } else {
             showError()
         }
@@ -126,9 +203,9 @@ class HomeFragment : Fragment() {
             PaymentMethodType.YOO_MONEY
         )
         val paymentParameters = PaymentParameters(
-            amount = Amount(BigDecimal.valueOf(10.0), Currency.getInstance("RUB")),
+            amount = Amount(BigDecimal.valueOf(debtDouble), Currency.getInstance("RUB")),
             title = getString(R.string.main_product_name),
-            subtitle = getString(R.string.main_product_description),
+            subtitle = all_info,
             clientApplicationKey = BuildConfig.MERCHANT_TOKEN,
             shopId = BuildConfig.SHOP_ID,
             savePaymentMethod = SavePaymentMethod.OFF,

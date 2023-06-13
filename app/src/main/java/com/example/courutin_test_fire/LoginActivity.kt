@@ -24,7 +24,6 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
 
     private val TAG = "LoginActivity"
-    //global variables
     private var email: String? = null
     private var password: String? = null
     private var flag_ender_data = true
@@ -33,31 +32,6 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
-        binding.btTest!!.setOnClickListener {
-            CoroutineScope(Dispatchers.IO).launch {
-                try {
-                    BlockchainManager.getInstance().setData(BigInteger.valueOf(1), BigInteger.valueOf(2), BigInteger.valueOf(3))
-                } catch (e: Exception) {
-                    Log.e("MainActivity", "Error getting greeting", e)
-                }
-            }
-        }
-
-        binding.idChange!!.setOnClickListener {
-            CoroutineScope(Dispatchers.IO).launch {
-                try {
-                    val contracts = BlockchainManager.getInstance().getLastUserStorageContract()
-                    withContext(Dispatchers.Main) {
-                        binding.tvTest.text = contracts
-                    }
-                } catch (e: Exception) {
-                    Log.e("MainActivity", "Error getting greeting", e)
-                }
-            }
-        }
-
         binding.button!!.setOnClickListener { signInAccount() }
 
 
@@ -87,7 +61,7 @@ class LoginActivity : AppCompatActivity() {
                     } else {
                         when ( val exception = result.exceptionOrNull()){
                             is FirebaseAuthInvalidUserException -> {
-                                // User not found
+                                // Пользователь не найден
                                 Toast.makeText(
                                     baseContext,
                                     getString(R.string.er_login_api_user_not_found),
@@ -95,7 +69,7 @@ class LoginActivity : AppCompatActivity() {
                                 ).show()
                             }
                             is FirebaseAuthInvalidCredentialsException -> {
-                                // Invalid credentials
+                                // Неверные учетные данные
                                 if (exception.errorCode == "ERROR_WRONG_PASSWORD") {
                                     Toast.makeText(
                                         baseContext,
@@ -111,14 +85,14 @@ class LoginActivity : AppCompatActivity() {
                                 }
                             }
                             is FirebaseAuthWeakPasswordException -> {
-                                // Weak password
+                                // Слабый пароль
                                 Toast.makeText(
                                     baseContext,
                                     getString(R.string.er_register_api_password_invalid),
                                     Toast.LENGTH_LONG
                                 ).show()
                             }
-                            // Other errors
+                            // Другие ошибки
                             else -> {
                                 Toast.makeText(
                                     baseContext,

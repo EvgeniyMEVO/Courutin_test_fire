@@ -104,12 +104,12 @@ class RegisterActivity : AppCompatActivity() {
         // создание контракта
         // привязка контракта к аккаунту
         CoroutineScope(Dispatchers.IO).launch {
+            DatabaseManager.saveAnyInfo("firstname", firstName)
+            DatabaseManager.saveAnyInfo("name", name)
             BlockchainManager.getInstance().setFabricaContractAddress()
             BlockchainManager.getInstance().createUserStorage()
             val adress = BlockchainManager.getInstance().getLastUserStorageContract()
             DatabaseManager.saveUserContractAddress(adress!!)
-            DatabaseManager.saveAnyInfo("firstname", firstName)
-            DatabaseManager.saveAnyInfo("name", name)
         }
     }
 
